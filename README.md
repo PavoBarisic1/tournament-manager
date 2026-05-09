@@ -122,11 +122,12 @@ POST /auth/login
 
 ## Project Structure
 
-src/main/java/com/projekt1/tournament_manager/
-├── controller/    # REST endpoints
-├── service/       # Business logic
-├── repository/    # Database communication
-├── model/         # JPA entities and enums
-├── security/      # JWT filter, service and Spring Security config
-├── dto/           # Data Transfer Objects
-└── exception/     # Custom exceptions and global handler
+| Package | Description |
+|---------|-------------|
+| controller/ | REST endpoints |
+| service/ | Business logic |
+| repository/ | Database communication |
+| model/ | JPA entities and enums |
+| security/ | JWT filter, service and Spring Security config |
+| dto/ | Data Transfer Objects |
+| exception/ | Custom exceptions and global handler |
