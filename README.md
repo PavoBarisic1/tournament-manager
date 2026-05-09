@@ -36,8 +36,11 @@ API Documentation (Swagger UI): `http://localhost:8081/swagger-ui/index.html`
 
 ## Authentication
 
-The API uses JWT token authentication. Include the token in the Authorization header:
-Authorization: Bearer <your-token>
+The API uses JWT token authentication. Add the token to the Authorization header as shown below.
+
+Example header:
+
+    Authorization: Bearer eyJhbGciOiJIUzUxMiJ9...
 
 ### Register
 
