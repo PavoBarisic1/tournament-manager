@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: tournament_manager
+    ports:
+      - "3308:3306"
+    networks:
+      - tournament-network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/tournament_manager
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+      JWT_SECRET: betting404secret404key404which404is404very404long404and404secure
+      JWT_EXPIRATION: 86400000
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - tournament-network
+
+networks:
+  tournament-network:
+    driver: bridge
