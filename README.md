@@ -40,7 +40,7 @@ The API uses JWT token authentication. Add the token to the Authorization header
 
 Example header:
 
-    Authorization: Bearer eyJhbGciOiJIUzUxMiJ9...
+    Authorization: Bearer eyJhbGciOiJIUzUxMiJ95...
 
 ### Register
 
