@@ -71,6 +71,16 @@ POST /auth/login
 | USER | GET endpoints only |
 | ADMIN | Full access (GET, POST, PUT, DELETE) |
 
+## Setting Up Admin Role
+
+After registering, a user has the USER role by default. To set a user as ADMIN, run the following command while the Docker containers are running:
+
+```bash
+docker exec -it tournament-manager-db-1 mariadb -u root -proot123 tournament_manager -e "UPDATE korisnik SET rola = 'ADMIN' WHERE email = 'your@email.com';"
+```
+
+Note: Admin role must be reassigned after each `docker compose down` since the database is recreated.
+
 ## API Endpoints
 
 ### Auth

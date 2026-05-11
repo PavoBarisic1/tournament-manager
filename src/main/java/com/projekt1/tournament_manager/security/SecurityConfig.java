@@ -27,6 +27,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.addAllowedOrigin("http://localhost:5173");
+                    config.addAllowedOrigin("http://localhost:8081");
+                    config.addAllowedOrigin("http://localhost:5174");
                     config.addAllowedMethod("*");
                     config.addAllowedHeader("*");
                     return config;
