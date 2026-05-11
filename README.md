@@ -1,9 +1,10 @@
-# Tournament Manager API
+# Tournament Manager
 
-A RESTful API for managing virtual sports tournaments with JWT authentication and role-based access control, built with Java and Spring Boot.
+A full-stack application for managing virtual sports tournaments with JWT authentication and role-based access control.
 
 ## Tech Stack
 
+### Backend
 - Java 21
 - Spring Boot 3.5
 - Spring Security + JWT
@@ -14,44 +15,89 @@ A RESTful API for managing virtual sports tournaments with JWT authentication an
 - Lombok
 - Swagger UI
 
+### Frontend
+- Vue.js 3
+- Vue Router
+- Vite
+
+## Features
+
+- User registration and login with JWT authentication
+- Role-based access control (ADMIN and USER)
+- Create and manage tournaments
+- Add players to tournaments
+- Record match results
+- View player rankings per tournament
+- Filter tournaments by sport and status
+
 ## Getting Started
 
 ### Prerequisites
 
 - Docker
 - Docker Compose
+- Node.js
+- npm
 
-### Run with Docker
+### Run Backend with Docker
 
 ```bash
-git clone https://github.com/your-username/tournament-manager.git
+git clone https://github.com/PavoBarisic/tournament-manager.git
 cd tournament-manager
 ./mvnw clean package -DskipTests
 docker compose up --build
 ```
 
-Application will be available at `http://localhost:8081`
+Backend available at `http://localhost:8081`
 
-API Documentation (Swagger UI): `http://localhost:8081/swagger-ui/index.html`
+Swagger UI: `http://localhost:8081/swagger-ui/index.html`
 
-## Authentication
+### Run Frontend
 
-The API uses JWT token authentication. Add the token to the Authorization header as shown below.
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-Example header:
+Frontend available at `http://localhost:5173`
 
-    Authorization: Bearer eyJhbGciOiJIUzUxMiJ95...
+## Setting Up Users
 
-### Register
+Users can be registered through **Swagger UI** or **Postman**.
+
+**Swagger UI:** `http://localhost:8081/swagger-ui/index.html`
+
+Navigate to `/auth/register` endpoint, click **Try it out** and send the request body below.
+
+**Postman:** Send a POST request to `http://localhost:8081/auth/register` with the following JSON body.
 
 ```json
 POST /auth/register
 {
-    "ime": "John",
-    "prezime": "Doe",
-    "email": "john@mail.com",
-    "lozinka": "john123"
+    "ime": "User",
+    "prezime": "User",
+    "email": "user@mail.com",
+    "lozinka": "user123"
 }
+```
+
+### Register Admin
+
+```json
+POST /auth/register
+{
+    "ime": "Admin",
+    "prezime": "Admin",
+    "email": "admin@mail.com",
+    "lozinka": "admin123"
+}
+```
+
+After registering, set the ADMIN role by running this command while Docker containers are running:
+
+```bash
+docker exec -it tournament-manager-db-1 mariadb -u root -proot123 tournament_manager -e "UPDATE korisnik SET rola = 'ADMIN' WHERE email = 'admin@mail.com';"
 ```
 
 ### Login
@@ -59,8 +105,8 @@ POST /auth/register
 ```json
 POST /auth/login
 {
-    "email": "john@mail.com",
-    "lozinka": "john123"
+    "email": "your@email.com",
+    "lozinka": "yourpassword"
 }
 ```
 
@@ -70,16 +116,6 @@ POST /auth/login
 |------|-------------|
 | USER | GET endpoints only |
 | ADMIN | Full access (GET, POST, PUT, DELETE) |
-
-## Setting Up Admin Role
-
-After registering, a user has the USER role by default. To set a user as ADMIN, run the following command while the Docker containers are running:
-
-```bash
-docker exec -it tournament-manager-db-1 mariadb -u root -proot123 tournament_manager -e "UPDATE korisnik SET rola = 'ADMIN' WHERE email = 'your@email.com';"
-```
-
-Note: Admin role must be reassigned after each `docker compose down` since the database is recreated.
 
 ## API Endpoints
 
@@ -132,12 +168,22 @@ Note: Admin role must be reassigned after each `docker compose down` since the d
 
 ## Project Structure
 
-| Package | Description |
-|---------|-------------|
-| controller/ | REST endpoints |
-| service/ | Business logic |
-| repository/ | Database communication |
-| model/ | JPA entities and enums |
-| security/ | JWT filter, service and Spring Security config |
-| dto/ | Data Transfer Objects |
-| exception/ | Custom exceptions and global handler |
+```
+tournament-manager/
+├── src/                    # Spring Boot backend
+│   └── main/java/com/projekt1/tournament_manager/
+│       ├── controller/     # REST endpoints
+│       ├── service/        # Business logic
+│       ├── repository/     # Database communication
+│       ├── model/          # JPA entities and enums
+│       ├── security/       # JWT filter, service and Spring Security config
+│       ├── dto/            # Data Transfer Objects
+│       └── exception/      # Custom exceptions and global handler
+├── frontend/               # Vue.js frontend
+│   └── src/
+│       ├── views/          # Page components
+│       ├── services/       # API communication
+│       └── router/         # Navigation and route guards
+├── docker-compose.yml
+└── Dockerfile
+```
